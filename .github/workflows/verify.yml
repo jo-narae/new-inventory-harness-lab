@@ -1,0 +1,43 @@
+name: verify
+
+# 검증의 원본은 scripts/verify/ 와 npm run verify 다 (docs/harness/01-ssot.md §2·§3).
+# 이 워크플로는 그것을 CI 에서 그대로 한 번 돌릴 뿐, 여기서 검사를 새로 정의하지 않는다.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# 같은 브랜치에 새 커밋이 오면 진행 중인 실행은 취소한다
+concurrency:
+  group: verify-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    env:
+      # 검증은 전용 DB 파일에서만 돈다 — verify:prepare 가 매번 지우고 새로 만든다
+      DATABASE_URL: file:./prisma/verify.db
+      # 실제 비밀이 아니다. CI 에서만 쓰는 값이며 저장소 시크릿을 쓰지 않는다
+      SESSION_SECRET: ci-only-not-a-real-secret-value-32chars
+
+    steps:
+      # Protected 는 내용 해시로 승인을 확인한다 — git 이력이 필요 없으므로 얕은 클론으로 충분하다
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # Protected → Prepare → Types → Lint → Architecture → Test → Build
+      # Prisma 클라이언트 생성과 시드는 Prepare 단계(scripts/ensure-db.ts)가 맡는다
+      - run: npm run verify
