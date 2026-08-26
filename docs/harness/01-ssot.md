@@ -30,7 +30,7 @@
 | 재고 도메인   | `docs/01-requirements.md` | 확정             |
 | 아키텍처     | `docs/06-architecture.md` | 확정             |
 | 개별 작업    | GitHub Issue              | 확정             |
-| 검증 규칙    | `scripts/verify/`         | 확정             |
+| 검증 규칙    | `docs/harness/02-verification.md` | 확정       |
 | 구현·검증 루프 | 없음                        | 추후 생성          |
 
 
@@ -88,22 +88,33 @@
 ### 검증 규칙
 
 
-**원본:** `scripts/verify/`
+**원본:** `docs/harness/02-verification.md`
 
 
-무엇을 통과해야 검증된 것인지는 이 디렉터리의 **실행 가능한 스크립트**가 정한다.
-문서가 아니라 코드가 원본이다. 돌려서 실패하면 실패한 것이다.
+무엇을 통과해야 검증된 것인지는 이 문서가 정한다.
+단계와 순서, 각 단계가 무엇을 보는지, 실패했을 때 무엇을 하는지가 여기서 결정된다.
 
 
+`scripts/verify/`는 원본이 아니라 **집행 수단**이다.
+검증 원본이 정한 것을 기계가 실행할 수 있는 형태로 옮긴 것이고, `npm run verify`가 그것을 돌린다.
 각 스크립트는 자신이 강제하는 규칙의 출처를 파일 상단에 인용한다.
-규칙 자체는 여기서 새로 만들지 않는다 — 도메인 규칙은 `docs/01-requirements.md`,
-구조 규칙은 `docs/06-architecture.md`가 원본이고, `scripts/verify/`는 그것을 기계가 읽는 형태로 옮긴 것이다.
 
 
-`npm run verify`가 이 디렉터리의 검사들을 순서대로 실행한다.
+규칙 자체를 검증 원본에서 새로 만들지 않는다 — 도메인 규칙은 `docs/01-requirements.md`,
+구조 규칙은 `docs/06-architecture.md`가 원본이다.
+`docs/harness/02-verification.md`는 그것들을 **무엇을 통과해야 하는가**로 옮긴 것이다.
 
 
-문서의 QA 체크리스트나 테스트 목록은 검증 원본이 아니다.
+**문서와 스크립트가 어긋나면 문서가 맞다.** 고칠 대상은 스크립트다.
+
+
+이 배치에는 대가가 있다. 원본이 실행되지 않으므로 **원본은 실패하지 않는다.**
+스크립트가 검사하지 않는 규칙이 문서에 있어도 `npm run verify`는 통과한다.
+그런 규칙은 없는 규칙이 아니라 **집행되지 않는 규칙**이고, 스크립트를 채워서 메운다.
+이 어긋남을 자동으로 잡아 주는 검사는 없다 — 둘을 같은 커밋에서 함께 고치는 것으로만 막는다.
+
+
+다른 문서의 QA 체크리스트나 테스트 목록은 검증 원본이 아니다.
 
 
 ---
@@ -226,6 +237,7 @@ SSOT가 틀렸다고 판단되면 고치지 말고 **말한다.**
 * `docs/01-requirements.md`
 * `docs/06-architecture.md`
 * `docs/harness/01-ssot.md`
+* `docs/harness/02-verification.md`
 * `prisma/schema.prisma`
 * `scripts/verify/` 안의 모든 `.ts`
 
