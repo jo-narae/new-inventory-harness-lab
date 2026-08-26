@@ -1,0 +1,130 @@
+name: 유지보수 작업
+description: 에이전트가 작업을 시작하는 데 필요한 6개 항목을 채운다
+title: "[유지보수] "
+labels: ["maintenance"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **이 Issue 는 이 작업의 원본이다** (`docs/harness/01-ssot.md` §2 — 개별 작업).
+
+        여기서 정하는 것은 **이 작업의 범위와 완료 조건**까지다.
+        도메인 규칙이나 아키텍처 결정을 Issue 에서 새로 만들지 않는다.
+        새 규칙이 필요하면 해당 원본을 먼저 고친 뒤 여기서 참조한다 (SSOT §3).
+
+        여섯 칸이 다 차야 작업을 시작할 수 있다. 빈칸은 에이전트가 추측으로 메운다.
+
+  # ────────────────────────────────────────────────────────────
+  - type: textarea
+    id: background
+    attributes:
+      label: 1. 배경 — 왜 필요한가
+      description: |
+        지금 무엇이 문제인가. 이 작업을 하지 않으면 무엇이 남는가.
+        해결책이 아니라 **상황**을 쓴다.
+      placeholder: |
+        예) 출고 화면에서 유통기한이 같은 로트가 두 줄로 나뉘어 보인다.
+        같은 로트인지 다른 로트인지 화면만 보고는 구분할 수 없어,
+        창고 담당자가 실물을 다시 확인하고 있다.
+    validations:
+      required: true
+
+  - type: textarea
+    id: change
+    attributes:
+      label: 2. 변경할 내용 — 무엇을 수정하는가
+      description: |
+        고칠 대상을 파일·함수 단위로 쓴다. 어디를 봐야 하는지 모르면
+        `docs/HANDOVER.md` §6 파일 지도를 참고한다.
+      placeholder: |
+        예) src/app/outbound/page.tsx — 로트 목록 집계 기준을
+        (productId, locationId, expiryDate) 로 묶는다.
+    validations:
+      required: true
+
+  - type: textarea
+    id: done
+    attributes:
+      label: 3. 종료 조건 — 무엇이 참이면 완료인가
+      description: |
+        **관찰 가능한 상태**로 쓴다. "개선한다" "정리한다" 는 종료 조건이 아니다.
+        읽는 사람마다 판정이 달라지면 그 줄은 아직 종료 조건이 아니다.
+      value: |
+        - [ ] 
+        - [ ] 
+    validations:
+      required: true
+
+  - type: textarea
+    id: machine-check
+    attributes:
+      label: 4. 기계 검증 — 어떤 테스트가 판정하는가
+      description: |
+        사람의 눈이 아니라 **명령**이 판정해야 한다.
+        무엇을 통과해야 검증된 것인지는 `docs/harness/02-verification.md` 가 정한다.
+        기존 검사로 판정되지 않는 종료 조건이 있으면, 그 검사를 만드는 것까지가 이 작업이다.
+      value: |
+        - [ ] `npm run verify` 전 단계 통과
+        - [ ] 새로 추가·수정하는 테스트: 
+    validations:
+      required: true
+
+  - type: textarea
+    id: boundary
+    attributes:
+      label: 5. 건드리면 안 되는 것 — 변경 경계는 어디인가
+      description: |
+        아래 보호 경로는 기본으로 금지다 (SSOT §6). 이 작업에만 해당하는 경계를 덧붙인다.
+        보호 경로를 꼭 고쳐야 하는 작업이면, 그 사실을 여기 적고 **사람의 승인을 먼저 받는다.**
+      value: |
+        보호 경로 — 사람의 승인 없이 바꾸지 않는다 (SSOT §6)
+
+        - `docs/01-requirements.md`
+        - `docs/06-architecture.md`
+        - `docs/harness/01-ssot.md`
+        - `docs/harness/02-verification.md`
+        - `prisma/schema.prisma`
+        - `scripts/verify/` 안의 모든 `.ts`
+
+        이 작업의 추가 경계
+
+        - 
+    validations:
+      required: true
+
+  - type: dropdown
+    id: max-loops
+    attributes:
+      label: 6. 구현 루프 최대 횟수 — 몇 번까지 재시도하는가
+      description: |
+        검증이 실패했을 때 에이전트가 스스로 고쳐 다시 돌리는 횟수의 상한이다.
+        이 횟수를 넘기면 **고치기를 멈추고 사람에게 가져온다.**
+        같은 검사를 계속 두드리는 것보다, 무엇이 막고 있는지 사람이 보는 편이 빠른 지점이 있다.
+      options:
+        - "1회 — 한 번에 통과하지 못하면 사람에게"
+        - "2회"
+        - "3회 (기본값)"
+        - "5회 — 원인이 불분명해 탐색이 필요한 작업"
+      default: 2
+    validations:
+      required: true
+
+  # ────────────────────────────────────────────────────────────
+  - type: textarea
+    id: notes
+    attributes:
+      label: 참고 (선택)
+      description: 관련 Issue·PR, 재현 절차, 스크린샷 등
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: contract
+    attributes:
+      label: 확인
+      options:
+        - label: 이 Issue 는 도메인 규칙이나 아키텍처 결정을 새로 정의하지 않는다 (SSOT §3)
+          required: true
+        - label: 기존 원본과 어긋나는 점을 발견하면 스스로 고르지 않고 `NEEDS_HUMAN` 으로 가져온다 (SSOT §4)
+          required: true
