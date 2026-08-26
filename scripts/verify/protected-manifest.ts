@@ -15,6 +15,7 @@ export const PROTECTED = [
   'docs/01-requirements.md',
   'docs/06-architecture.md',
   'docs/harness/01-ssot.md',
+  'docs/harness/02-verification.md',
   'prisma/schema.prisma',
   'scripts/verify/',
 ] as const
