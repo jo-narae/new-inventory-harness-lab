@@ -1,13 +1,13 @@
 {
   "note": "보호 경로 승인 기록 — docs/harness/01-ssot.md §6. 직접 편집하지 말고 npm run verify:approve 로 갱신한다",
-  "approvedAt": "2026-08-26T06:38:27.089Z",
+  "approvedAt": "2026-08-26T07:45:21.331Z",
   "approvedBy": "jo-narae <nare6004@gmail.com>",
-  "reason": "검증 규칙 원본을 scripts/verify/ 에서 docs/harness/02-verification.md 로 이전 — 사람 요청",
+  "reason": "(사유 미기재)",
   "paths": {
     "docs/01-requirements.md": "0a5c88fb9be5b1688b925063862606534367b66cfdbb5a400830bb4f911a7d3c",
     "docs/06-architecture.md": "aab17e1eaf0d439c0a92321845ca146765515b8b379d3a3f08460955fea81ac4",
     "docs/harness/01-ssot.md": "9c2bdec7c8e4051f8655a4fce0d044e6003751fe224f8cc7ab4833b69e7379d1",
-    "docs/harness/02-verification.md": "59fedb16234d64879de15811bf4096d77941283e686a2a8761ed6edfdf49a225",
+    "docs/harness/02-verification.md": "61394dad9a82796beafce43827d7b22a4ff96ccb92ea163bf157331d8d3ef10e",
     "prisma/schema.prisma": "da9f96ad255e07d1226b7c80fda5803a5582c9e4cb4910e0a274752692ad8244",
     "scripts/verify/approve.ts": "2527759373885329c1236a6a01e6648f410f901b80af2b5a7532d85e208e2776",
     "scripts/verify/architecture.ts": "db9c8443d88e5448fabef0854c1648664d7dd5ab25e39afff9dc252b31da66fc",

@@ -26,6 +26,10 @@ jobs:
       DATABASE_URL: file:./prisma/verify.db
       # 실제 비밀이 아니다. CI 에서만 쓰는 값이며 저장소 시크릿을 쓰지 않는다
       SESSION_SECRET: ci-only-not-a-real-secret-value-32chars
+      # 보호 경로 우회 (docs/harness/01-ssot.md §6).
+      # 저장소 변수 PROTECTED_OK 에 사유가 들어 있으면 CI 도 Protected 를 넘어간다.
+      # 비어 있으면 평소대로 검사한다. 값을 넣어 두면 넣어 둔 동안 계속 넘어간다
+      PROTECTED_OK: ${{ vars.PROTECTED_OK }}
 
     steps:
       # Protected 는 내용 해시로 승인을 확인한다 — git 이력이 필요 없으므로 얕은 클론으로 충분하다
