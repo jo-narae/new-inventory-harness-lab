@@ -1,7 +1,8 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { db } from '../helpers'
 import { applyMovement } from '@/lib/stock'
-import { getPopupDetail, getPopupList, settlePopupTx } from '@/lib/popup'
+import { getPopupDetail, getPopupList, popupDisplayStatus, settlePopupTx } from '@/lib/popup'
+import { POPUP_STATUS_LABEL, type PopupStatus } from '@/lib/constants'
 import { dateOnly, today, addDays } from '@/lib/date'
 
 /**
@@ -78,6 +79,11 @@ async function makePopup(suffix: string, endDate: Date, withStock = false) {
   return { popup, location, user, product, name }
 }
 
+/** 화면에 읽히는 상태 문구 */
+function shownLabel(detail: { popup: { status: string }; overdue: boolean }) {
+  return POPUP_STATUS_LABEL[popupDisplayStatus(detail.popup.status as PopupStatus, detail.overdue)]
+}
+
 describe('Issue #6 — 기한이 지난 팝업 표시', () => {
   beforeAll(cleanup)
   afterAll(async () => {
@@ -93,6 +99,9 @@ describe('Issue #6 — 기한이 지난 팝업 표시', () => {
 
     const row = (await getPopupList()).find((p) => p.name === name)
     expect(row?.overdue).toBe(true)
+
+    // `기한 지남` 옆에 `진행 중` 이 같이 서면 두 배지가 상반된 말을 한다 (#11 반려 사유)
+    expect(shownLabel(detail!)).toBe('정산 중')
   })
 
   it('종료일 당일에는 기한 지남으로 판정되지 않는다', async () => {
@@ -103,6 +112,7 @@ describe('Issue #6 — 기한이 지난 팝업 표시', () => {
 
     const row = (await getPopupList()).find((p) => p.name === name)
     expect(row?.overdue).toBe(false)
+    expect(shownLabel(detail!)).toBe('진행 중')
   })
 
   it('종료일 이전에는 기한 지남으로 판정되지 않는다', async () => {
@@ -113,6 +123,7 @@ describe('Issue #6 — 기한이 지난 팝업 표시', () => {
 
     const row = (await getPopupList()).find((p) => p.name === name)
     expect(row?.overdue).toBe(false)
+    expect(shownLabel(detail!)).toBe('진행 중')
   })
 
   it('기한이 지나도 정산 확정 전이면 ACTIVE 상태와 정산 기능이 유지된다', async () => {
@@ -122,6 +133,8 @@ describe('Issue #6 — 기한이 지난 팝업 표시', () => {
     const before = await getPopupDetail(popup.id)
     expect(before?.overdue).toBe(true)
     expect(before?.popup.status).toBe('ACTIVE')
+    // 바뀌는 것은 읽히는 문구뿐이다
+    expect(shownLabel(before!)).toBe('정산 중')
 
     // 그리고 정산이 그대로 된다 — 잔여 10 · 시식 5 → 차감 20 → 판매 15
     const lot = await db.lot.findFirstOrThrow({ where: { locationId: popup.locationId } })
