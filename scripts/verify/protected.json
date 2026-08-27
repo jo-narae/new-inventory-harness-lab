@@ -32,10 +32,10 @@
       "reason": "PR 승인·반려 원본 04-human-decision.md 신설 — SSOT\n  등록부·03·02 경계 갱신, 보호 경로 등록"
     },
     "docs/harness/04-human-decision.md": {
-      "hash": "457ca2bb830602fdfdb12d21b3fb35d88e5d74fbffeb7b86b866ad3f569d5262",
-      "approvedAt": "2026-08-27T07:14:41.065Z",
+      "hash": "6fa9484c3b3056032ff65f8489f008180441e0d8d774e679566568cae03be642",
+      "approvedAt": "2026-08-27T07:29:13.931Z",
       "approvedBy": "jo-narae <nare6004@gmail.com>",
-      "reason": "PR 승인·반려 원본 04-human-decision.md 신설 — SSOT\n  등록부·03·02 경계 갱신, 보호 경로 등록"
+      "reason": "반려 코멘트 판정을 현재 반려 주기로 한정한다"
     },
     "prisma/schema.prisma": {
       "hash": "da9f96ad255e07d1226b7c80fda5803a5582c9e4cb4910e0a274752692ad8244",

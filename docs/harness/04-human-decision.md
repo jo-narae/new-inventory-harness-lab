@@ -109,29 +109,62 @@ PR 본문의 `Closes #<번호>` 때문에 **머지와 동시에 연결된 Issue 
 **브랜치를 함께 삭제하지 않는다.**
 `gh pr close -d` 로 head 브랜치를 지우면 그 PR 은 다시 열 수 없고, §6 의 재진입이 성립하지 않는다.
 
-### 5.2 유효성 판정
+### 5.2 반려 주기
+
+**현재 Close 에 대응하는 반려 코멘트만 유효하다.**
+
+같은 PR 은 반려와 reopen 을 여러 번 지날 수 있다. 그래서 판정 대상을 구간으로 좁힌다.
+
+> **반려 주기 = 가장 최근 reopen 이후부터 현재 Close 까지.**
+
+* 이 구간 안의 `**[harness] 반려**` 코멘트만 판정에 쓴다
+* 구간 안에 여러 개면 **가장 마지막 것**이 현재 반려다
+* 구간 안에 하나도 없으면 `NEEDS_HUMAN` 이다
+* **이전 반려 주기의 코멘트를 현재 반려 사유로 재사용하지 않는다**
+* reopen 이 한 번도 없었으면 PR 이 열린 시점부터가 첫 주기다
+
+구간의 끝이 Close 시각이므로, **Close 뒤에 남긴 코멘트는 이번 주기에 들지 않는다.**
+§5.1 이 "먼저 코멘트를 남기고, 그다음 Close 한다"고 정한 순서가 여기서 판정에 쓰인다.
+
+### 5.3 유효성 판정
 
 ```text
 state: CLOSED 이고 mergedAt: null
     │
     ▼
-그 PR 의 코멘트에서 [harness] 반려 마커를 찾는다
+반려 주기를 정한다 (§5.2)
     │
-    ├─ 마커가 있고 두 항목이 모두 있다 ──→ 유효한 반려 → §6
+    ▼
+구간 안에서 [harness] 반려 마커를 찾는다
     │
-    ├─ 마커가 없다 ────────────────────→ NEEDS_HUMAN
+    ├─ 있고 두 항목이 모두 있다 ──→ 유효한 반려 → §6
+    │      (여럿이면 마지막 것)
     │
-    └─ 마커는 있으나 항목이 빠졌다 ─────→ NEEDS_HUMAN
+    ├─ 구간 안에 없다 ───────────→ NEEDS_HUMAN
+    │      (구간 밖의 것을 끌어오지 않는다)
+    │
+    └─ 마커는 있으나 항목이 빠졌다 → NEEDS_HUMAN
 ```
-
-마커가 붙은 코멘트가 여럿이면 **마지막 것이 현재 반려**다.
 
 ```bash
-gh pr view <번호> --json comments \
-  --jq '[.comments[] | select(.body | startswith("**[harness] 반려**"))] | last'
+PR=<번호>
+REPO=$(gh repo view --json nameWithOwner --jq .nameWithOwner)
+
+# 주기 시작 — 가장 최근 reopen. 한 번도 없었으면 빈 문자열이 되어 PR 처음부터가 된다
+FROM=$(gh api repos/$REPO/issues/$PR/timeline --paginate \
+  --jq '[.[] | select(.event=="reopened") | .created_at] | last // ""')
+
+# 주기 끝 — 현재 Close
+TO=$(gh pr view $PR --json closedAt --jq .closedAt)
+
+gh api repos/$REPO/issues/$PR/comments --paginate \
+  --jq "[.[] | select(.created_at > \"$FROM\" and .created_at <= \"$TO\")
+        | select(.body | startswith(\"**[harness] 반려**\"))] | last"
 ```
 
-### 5.3 유효하지 않을 때
+결과가 비어 있으면(`null`) 이번 주기에 반려 코멘트가 없는 것이다 — §5.4 를 따른다.
+
+### 5.4 유효하지 않을 때
 
 **AI 는 반려 사유를 추측해서 재구현하지 않는다.**
 
@@ -217,6 +250,9 @@ gh pr reopen <번호>
 * **새 PR 을 만들지 않는다.** 재구현 결과는 같은 PR 에 이어서 반영한다
 * reopen 이 실패하면 (대개 head 브랜치가 삭제된 경우) `NEEDS_HUMAN` 이다.
   AI 가 새 브랜치나 새 PR 로 우회하지 않는다
+
+**reopen 은 반려 주기의 경계다.** 이 시점 이후에 남는 `**[harness] 반려**` 코멘트가
+다음 주기의 판정 대상이 되고, 이번 주기의 코멘트는 다시 쓰이지 않는다 (§5.2).
 
 ---
 
