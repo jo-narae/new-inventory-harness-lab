@@ -111,6 +111,14 @@ export const POPUP_STATUS_LABEL: Record<PopupStatus, string> = {
   CLOSED: '종료',
 }
 
+/** 배지 톤 — 목록과 상세가 같은 문구에 같은 색을 쓴다 */
+export const POPUP_STATUS_TONE: Record<PopupStatus, 'acc' | 'amber' | 'ok' | 'gray'> = {
+  PREP: 'amber',
+  ACTIVE: 'acc',
+  SETTLING: 'amber',
+  CLOSED: 'gray',
+}
+
 export const USER_ROLES = { MEMBER: 'MEMBER', ADMIN: 'ADMIN' } as const
 export type UserRole = (typeof USER_ROLES)[keyof typeof USER_ROLES]
 

@@ -1,8 +1,8 @@
 import type { Prisma } from '@/generated/prisma/client'
 import { db } from './db'
 import { applyMovement, reverseMovement } from './stock'
-import { MOVEMENT_TYPES, POPUP_STATUS, REASON_CODES } from './constants'
-import { dateOnly } from './date'
+import { MOVEMENT_TYPES, POPUP_STATUS, REASON_CODES, type PopupStatus } from './constants'
+import { dateOnly, daysUntil } from './date'
 
 /**
  * 팝업 = 여러 번 재고가 들어갔다가 마지막에 한 번 정산되는 임시 거점.
@@ -45,6 +45,34 @@ export function tallyPopup(movements: MovementLike[], popupLocationId: number): 
   }
 }
 
+/**
+ * 팝업 기한이 지났는가 — 종료일 다음 날부터 참이다 (Issue #6).
+ *
+ * **날짜 경과만으로 `status` 를 바꾸지 않는다.** `CLOSED` 는 정산 확정을 뜻하므로,
+ * 기한이 지나도 정산 전이면 팝업은 그대로 `ACTIVE` 이고 정산 기능도 그대로다.
+ * 사람이 확정하기 전까지 상태를 자동으로 옮기지 않는 것은 유통기한 만료와 같은 결이다 (F9).
+ *
+ * 이 판정은 **화면 표시에만** 쓰인다 — 기한이 지난 팝업을 현재 유효한 팝업으로
+ * 잘못 읽지 않게 하는 것이 목적이다.
+ */
+export function isPopupOverdue(endDate: Date): boolean {
+  return daysUntil(endDate) < 0
+}
+
+/**
+ * 화면에 보일 상태 — 기한이 지난 진행 중 팝업은 `정산 중` 으로 읽힌다 (Issue #6).
+ *
+ * **저장된 `status` 는 그대로다.** 바뀌는 것은 읽히는 문구뿐이다 (종료 조건 4).
+ * `기한 지남` 옆에 `진행 중` 이 같이 서면 두 배지가 상반된 말을 하게 되어,
+ * 기한이 지난 팝업을 현재 유효한 팝업으로 읽는 오독이 그대로 남는다.
+ *
+ * `PREP` 은 바꾸지 않는다 — 반출서만 작성돼 재고가 움직이지 않은 상태라 정산할 것이 없다.
+ * 기한이 지났다는 사실은 `기한 지남` 배지가 따로 말한다.
+ */
+export function popupDisplayStatus(status: PopupStatus, overdue: boolean): PopupStatus {
+  return overdue && status === POPUP_STATUS.ACTIVE ? POPUP_STATUS.SETTLING : status
+}
+
 // ───────────────────────── 조회
 
 export async function getPopupList() {
@@ -59,6 +87,7 @@ export async function getPopupList() {
     status: p.status,
     startDate: p.startDate,
     endDate: p.endDate,
+    overdue: isPopupOverdue(p.endDate),
     onHand: p.location.lots.reduce((s, l) => s + l.quantity, 0),
     ...tallyPopup(p.movements, p.locationId),
   }))
@@ -134,6 +163,8 @@ export async function getPopupDetail(popupId: number) {
 
   return {
     popup,
+    /** 기한이 지났는가 — 화면 표시용. `popup.status` 는 이 값에 영향받지 않는다 */
+    overdue: isPopupOverdue(popup.endDate),
     totals,
     byProduct: [...byProduct.values()].sort((a, b) => b.shipped - a.shipped || a.name.localeCompare(b.name, 'ko')),
     /** 정산 입력 대상 — 팝업에 남아 있는 로트 (유통기한을 보존해야 복귀 로트가 맞는다) */

@@ -1,16 +1,14 @@
 import Link from 'next/link'
 import { Badge } from '@/components/StatusBadge'
-import { getPopupList, popupPeriod } from '@/lib/popup'
-import { POPUP_STATUS, POPUP_STATUS_LABEL, type PopupStatus } from '@/lib/constants'
+import { getPopupList, popupDisplayStatus, popupPeriod } from '@/lib/popup'
+import {
+  POPUP_STATUS,
+  POPUP_STATUS_LABEL,
+  POPUP_STATUS_TONE,
+  type PopupStatus,
+} from '@/lib/constants'
 
 export const dynamic = 'force-dynamic'
-
-const TONE: Record<PopupStatus, 'acc' | 'amber' | 'ok' | 'gray'> = {
-  PREP: 'amber',
-  ACTIVE: 'acc',
-  SETTLING: 'amber',
-  CLOSED: 'gray',
-}
 
 export default async function PopupsPage() {
   const popups = await getPopupList()
@@ -37,30 +35,39 @@ export default async function PopupsPage() {
         <p className="px-4 py-12 text-center text-[13px] text-sub">진행 중인 팝업이 없습니다</p>
       )}
 
-      {running.map((p) => (
-        <Link key={p.id} href={`/popups/${p.id}`} className="block border-b border-line px-4 py-3.5">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-[13.5px] font-bold">🎪 {p.name}</p>
-              <p className="mt-[3px] text-[11px] text-sub tnum">
-                {popupPeriod(p.startDate, p.endDate)} · 누적 반출 {p.shipped}개 · 현재 보유{' '}
-                <b className="text-acc">{p.onHand}개</b>
-              </p>
+      {running.map((p) => {
+        // 저장된 status 가 아니라 읽히는 문구를 고른다 — status 자체는 그대로다
+        const shown = popupDisplayStatus(p.status as PopupStatus, p.overdue)
+        return (
+          <Link
+            key={p.id}
+            href={`/popups/${p.id}`}
+            className="block border-b border-line px-4 py-3.5"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-[13.5px] font-bold">🎪 {p.name}</p>
+                <p className="mt-[3px] text-[11px] text-sub tnum">
+                  {popupPeriod(p.startDate, p.endDate)} · 누적 반출 {p.shipped}개 · 현재 보유{' '}
+                  <b className="text-acc">{p.onHand}개</b>
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                {p.overdue && <Badge tone="red">기한 지남</Badge>}
+                <Badge tone={POPUP_STATUS_TONE[shown]}>{POPUP_STATUS_LABEL[shown]}</Badge>
+                <span className="text-sub">›</span>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <Badge tone={TONE[p.status as PopupStatus]}>
-                {POPUP_STATUS_LABEL[p.status as PopupStatus]}
-              </Badge>
-              <span className="text-sub">›</span>
-            </div>
-          </div>
-          <p className="mt-1.5 text-[10.5px] text-[#a9a3b8]">
-            {p.status === POPUP_STATUS.PREP
-              ? '반출서만 작성된 상태입니다. 아직 재고는 움직이지 않았습니다'
-              : '행사 중 · 추가 반출과 정산을 여기서 합니다'}
-          </p>
-        </Link>
-      ))}
+            <p className="mt-1.5 text-[10.5px] text-[#a9a3b8]">
+              {p.overdue
+                ? '종료일이 지났습니다. 정산은 아직 확정되지 않았습니다'
+                : p.status === POPUP_STATUS.PREP
+                  ? '반출서만 작성된 상태입니다. 아직 재고는 움직이지 않았습니다'
+                  : '행사 중 · 추가 반출과 정산을 여기서 합니다'}
+            </p>
+          </Link>
+        )
+      })}
 
       {closed.length > 0 && (
         <>
