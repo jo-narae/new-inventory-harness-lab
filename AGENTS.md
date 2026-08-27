@@ -31,6 +31,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 | 지금 이 작업의 범위와 완료 조건                                                         | 해당 GitHub Issue                                                          |
 | 무엇을 통과해야 검증된 것인가 · 어떤 검사가 도는가                                            | `docs/harness/02-verification.md` (검사 실행: `npm run verify`)              |
 | 검증에 실패했을 때 다시 돌리는가 · 시도 횟수 · 세션이 끊긴 뒤 이어받기 · **PR 에 진입해도 되는가** · CI 가 실패했을 때 | `docs/harness/03-loop.md`                                                |
+| PR 이 승인됐나 반려됐나 · 반려된 뒤 무엇을 하나 · **Merge 를 AI 가 해도 되나** · 반려 후 attempt | `docs/harness/04-human-decision.md` |
 
 
 두 줄에 걸치는 질문이면 **위쪽부터** 읽는다. 도메인 규칙이 구현 구조보다 앞선다.
@@ -42,11 +43,10 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## 2. 원본이 없는 영역 — 지어내지 않는다
 
-| 영역 | 지금 할 일 |
-|---|---|
-| **Review 이후의 흐름** (Review → 사람 판단 → Merge) | 원본 없음. 지금까지의 관행을 규칙인 것처럼 말하지 않는다 |
+현재 없음. `Issue → 구현 → 검증 → PR → 사람 판단 → Merge` 는 모두 원본이 있다.
 
-추후 생성 예정이다. 그전까지는 "정해진 바 없음"이 정확한 답이다.
+원본이 없는 영역이 새로 생기면 SSOT §5 에 등록된다.
+등록되지 않은 영역을 만나면 관행을 규칙인 것처럼 말하지 않는다 — **"정해진 바 없음"이 정확한 답이다.**
 
 ---
 

@@ -33,7 +33,7 @@
 | 검증 규칙    | `docs/harness/02-verification.md` | 확정       |
 | 구현·검증 루프 (로컬) | `docs/harness/03-loop.md` | 확정             |
 | PR 진입 · CI 실패 후 복귀 | `docs/harness/03-loop.md` | 확정             |
-| Review 이후의 흐름 | 없음                        | 추후 생성          |
+| PR 판단 (승인·반려) 과 Merge | `docs/harness/04-human-decision.md` | 확정 |
 
 
 ---
@@ -146,7 +146,38 @@
 루프를 실행하는 중에만 생기는 NEEDS_HUMAN 조건은 `docs/harness/03-loop.md` 가 정한다.
 
 
-Review · 사람 판단 · Merge 는 이 원본이 정하지 않는다 (§5).
+PR 이 열린 뒤의 승인·반려는 이 원본이 정하지 않는다 — `docs/harness/04-human-decision.md` 를 따른다.
+
+
+---
+
+
+### PR 판단 (승인·반려) 과 Merge
+
+
+**원본:** `docs/harness/04-human-decision.md`
+
+
+다음을 판단할 때 사용한다.
+
+
+* 무엇이 승인이고 무엇이 반려인가
+* 사람의 판단을 기다리는 동안 무엇을 하지 않는가
+* 반려 코멘트가 무엇을 갖춰야 하는가
+* 반려를 판독한 뒤 무엇을 어떤 순서로 하는가
+* 이 흐름에서만 생기는 NEEDS_HUMAN 은 무엇인가
+
+
+**승인은 Merge, 반려는 Merge 없는 Close 다.** GitHub 의 Review 기능은 신호로 쓰지 않는다.
+
+
+PR 에 진입하기까지는 `docs/harness/03-loop.md` 가 정한다.
+attempt 를 세는 법, 구현·검증 반복, 루프 상태 코멘트의 형식도 03 이 원본이다.
+04 는 그것들을 다시 정의하지 않고 참조한다.
+
+
+**Merge 와 Close 는 사람의 행위다.** AI 가 실행하지 않는다.
+이것을 강제하는 장치는 저장소에 없다 — §6 의 승인 기록과 같은 성격의 규약이다.
 
 
 ---
@@ -221,18 +252,14 @@ AI가 스스로 처리하는 것은 첫 줄(참고 문서 ↔ SSOT)뿐이고, �
 ## 5. 아직 원본이 없는 영역
 
 
-### Review 이후의 흐름
+현재 없음.
 
 
-현재 원본 없음.
+`Issue → 구현 → 검증 → PR 진입 → CI 실패 후 복귀` 는 `docs/harness/03-loop.md` 가,
+그 뒤 `사람 판단 (승인·반려) → Merge` 는 `docs/harness/04-human-decision.md` 가 정한다.
 
 
-`Issue → 구현 → 검증 → PR 진입 → CI 실패 후 복귀` 까지는 `docs/harness/03-loop.md` 가 정한다.
-그 뒤 — `Review → 사람 판단 → Merge` — 는 아직 원본이 없다.
-
-
-세부 순서와 게이트 규칙은 해당 원본이 만들어질 때 정의한다.
-그전까지는 지금까지의 관행을 규칙인 것처럼 말하지 않는다.
+새로 등록되지 않은 영역이 생기면 여기에 적고, 임의의 문서를 기준으로 삼지 않는다.
 
 
 ---
@@ -270,6 +297,7 @@ SSOT가 틀렸다고 판단되면 고치지 말고 **말한다.**
 * `docs/harness/01-ssot.md`
 * `docs/harness/02-verification.md`
 * `docs/harness/03-loop.md`
+* `docs/harness/04-human-decision.md`
 * `prisma/schema.prisma`
 * `scripts/verify/` 안의 모든 `.ts`
 

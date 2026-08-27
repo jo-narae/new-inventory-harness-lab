@@ -14,22 +14,28 @@
       "reason": "(사유 미기재)"
     },
     "docs/harness/01-ssot.md": {
-      "hash": "21681f3c9b9d136f7ebc54252a1f7605da1bf0ab697812871028b5eeaafd2c73",
-      "approvedAt": "2026-08-27T05:21:19.900Z",
+      "hash": "5cc0b972fbc0f75b968ccc01c5bcf320e6c0af738fa17c3a31babf7aeab9764e",
+      "approvedAt": "2026-08-27T07:14:40.961Z",
       "approvedBy": "jo-narae <nare6004@gmail.com>",
-      "reason": "PR 진입 \n  조건과 CI 실패 후 복귀 규칙 추가"
+      "reason": "PR 승인·반려 원본 04-human-decision.md 신설 — SSOT\n  등록부·03·02 경계 갱신, 보호 경로 등록"
     },
     "docs/harness/02-verification.md": {
-      "hash": "eef63ff01ee3bd446778886644f36794786caa1fd5143ea9beeb4669a2f70cca",
-      "approvedAt": "2026-08-27T05:21:19.942Z",
+      "hash": "3d95590eea11f09f316989de6bc91085851d6d2a9ea80e260c78980a7840e144",
+      "approvedAt": "2026-08-27T07:14:40.998Z",
       "approvedBy": "jo-narae <nare6004@gmail.com>",
-      "reason": "PR 진입 \n  조건과 CI 실패 후 복귀 규칙 추가"
+      "reason": "PR 승인·반려 원본 04-human-decision.md 신설 — SSOT\n  등록부·03·02 경계 갱신, 보호 경로 등록"
     },
     "docs/harness/03-loop.md": {
-      "hash": "505789c377509b0e591a28f35d83ecfe8b3766978a9e332382e967ab49698d5e",
-      "approvedAt": "2026-08-27T05:21:19.976Z",
+      "hash": "84cc20d6b6b883c68ab6793ee9ab63e3fe96548a9e8030b147f2952f2c7010b7",
+      "approvedAt": "2026-08-27T07:14:41.031Z",
       "approvedBy": "jo-narae <nare6004@gmail.com>",
-      "reason": "PR 진입 \n  조건과 CI 실패 후 복귀 규칙 추가"
+      "reason": "PR 승인·반려 원본 04-human-decision.md 신설 — SSOT\n  등록부·03·02 경계 갱신, 보호 경로 등록"
+    },
+    "docs/harness/04-human-decision.md": {
+      "hash": "457ca2bb830602fdfdb12d21b3fb35d88e5d74fbffeb7b86b866ad3f569d5262",
+      "approvedAt": "2026-08-27T07:14:41.065Z",
+      "approvedBy": "jo-narae <nare6004@gmail.com>",
+      "reason": "PR 승인·반려 원본 04-human-decision.md 신설 — SSOT\n  등록부·03·02 경계 갱신, 보호 경로 등록"
     },
     "prisma/schema.prisma": {
       "hash": "da9f96ad255e07d1226b7c80fda5803a5582c9e4cb4910e0a274752692ad8244",
@@ -50,10 +56,10 @@
       "reason": "(사유 미기재)"
     },
     "scripts/verify/protected-manifest.ts": {
-      "hash": "1eadc7c3b3e0c80034aac573731e6e778106c1c1276fa2609182b41353554770",
-      "approvedAt": "2026-08-27T02:12:47.117Z",
+      "hash": "246a65077285c1ea5e9c056106bc9a5f6b51e5c59ba7fa9817ef07249685323a",
+      "approvedAt": "2026-08-27T07:14:41.101Z",
       "approvedBy": "jo-narae <nare6004@gmail.com>",
-      "reason": "구현·검증 루프 원본 03-loop.md 신설"
+      "reason": "PR 승인·반려 원본 04-human-decision.md 신설 — SSOT\n  등록부·03·02 경계 갱신, 보호 경로 등록"
     },
     "scripts/verify/protected.ts": {
       "hash": "42a76db9e2f79e23ffa389f630b6198fe261ef01a304254bfd58c908bff293fe",
