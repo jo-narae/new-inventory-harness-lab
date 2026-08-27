@@ -14,16 +14,22 @@
       "reason": "(사유 미기재)"
     },
     "docs/harness/01-ssot.md": {
-      "hash": "2c943feecf9715376a90d976465012cabab5fd50c9cf20c379b2889545a8bc9c",
-      "approvedAt": "2026-08-26T11:12:46.852Z",
+      "hash": "6c007382864fb4f2658a9abb3b9662348ae78a70210617164193c0f57dd96410",
+      "approvedAt": "2026-08-27T02:12:47.001Z",
       "approvedBy": "jo-narae <nare6004@gmail.com>",
-      "reason": "보호 경로 우회 제거 — 범위 승인으로 전환"
+      "reason": "구현·검증 루프 원본 03-loop.md 신설"
     },
     "docs/harness/02-verification.md": {
-      "hash": "511f10fc6cbb670b804055bba271352f56f2435eba6ab9fdee0550a9974b57f8",
-      "approvedAt": "2026-08-26T11:12:46.892Z",
+      "hash": "aca659ec259aa5512f8cc28671635cd49c3b9237dba761e3a03b298ffcf97b90",
+      "approvedAt": "2026-08-27T02:12:47.042Z",
       "approvedBy": "jo-narae <nare6004@gmail.com>",
-      "reason": "보호 경로 우회 제거 — 범위 승인으로 전환"
+      "reason": "구현·검증 루프 원본 03-loop.md 신설"
+    },
+    "docs/harness/03-loop.md": {
+      "hash": "e48a4adbb0aa44859fd6714a1e0b9e004ef1f586205c4d82c740dc15bacdee57",
+      "approvedAt": "2026-08-27T02:12:47.081Z",
+      "approvedBy": "jo-narae <nare6004@gmail.com>",
+      "reason": "구현·검증 루프 원본 03-loop.md 신설"
     },
     "prisma/schema.prisma": {
       "hash": "da9f96ad255e07d1226b7c80fda5803a5582c9e4cb4910e0a274752692ad8244",
@@ -44,10 +50,10 @@
       "reason": "(사유 미기재)"
     },
     "scripts/verify/protected-manifest.ts": {
-      "hash": "9ebca215c37b791b35ba68ded04e959e412681a8f8fe3c7b101c95b4c1c6c649",
-      "approvedAt": "2026-08-26T11:12:46.973Z",
+      "hash": "1eadc7c3b3e0c80034aac573731e6e778106c1c1276fa2609182b41353554770",
+      "approvedAt": "2026-08-27T02:12:47.117Z",
       "approvedBy": "jo-narae <nare6004@gmail.com>",
-      "reason": "보호 경로 우회 제거 — 범위 승인으로 전환"
+      "reason": "구현·검증 루프 원본 03-loop.md 신설"
     },
     "scripts/verify/protected.ts": {
       "hash": "42a76db9e2f79e23ffa389f630b6198fe261ef01a304254bfd58c908bff293fe",

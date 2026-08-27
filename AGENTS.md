@@ -30,6 +30,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 | 코드가 어떻게 나뉘어 있나 · `applyMovement` 같은 핵심 로직 · 왜 이 구조인가 · 인증 · 시드 설계 · 동시성    | `docs/06-architecture.md`                                                |
 | 지금 이 작업의 범위와 완료 조건                                                         | 해당 GitHub Issue                                                          |
 | 무엇을 통과해야 검증된 것인가 · 어떤 검사가 도는가                                            | `docs/harness/02-verification.md` (검사 실행: `npm run verify`)              |
+| 검증에 실패했을 때 다시 돌리는가 · 시도 횟수 · 세션이 끊긴 뒤 이어받기                          | `docs/harness/03-loop.md`                                                |
 
 
 두 줄에 걸치는 질문이면 **위쪽부터** 읽는다. 도메인 규칙이 구현 구조보다 앞선다.
@@ -43,7 +44,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 | 영역 | 지금 할 일 |
 |---|---|
-| **구현·검증 루프** (Issue → … → Merge 순서) | 원본 없음. 지금까지의 관행을 규칙인 것처럼 말하지 않는다 |
+| **PR 이후의 흐름** (PR → CI → Review → Merge 순서) | 원본 없음. 지금까지의 관행을 규칙인 것처럼 말하지 않는다 |
 
 추후 생성 예정이다. 그전까지는 "정해진 바 없음"이 정확한 답이다.
 
