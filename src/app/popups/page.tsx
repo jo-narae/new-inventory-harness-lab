@@ -48,6 +48,7 @@ export default async function PopupsPage() {
               </p>
             </div>
             <div className="flex items-center gap-2">
+              {p.overdue && <Badge tone="red">기한 지남</Badge>}
               <Badge tone={TONE[p.status as PopupStatus]}>
                 {POPUP_STATUS_LABEL[p.status as PopupStatus]}
               </Badge>
@@ -55,9 +56,11 @@ export default async function PopupsPage() {
             </div>
           </div>
           <p className="mt-1.5 text-[10.5px] text-[#a9a3b8]">
-            {p.status === POPUP_STATUS.PREP
-              ? '반출서만 작성된 상태입니다. 아직 재고는 움직이지 않았습니다'
-              : '행사 중 · 추가 반출과 정산을 여기서 합니다'}
+            {p.overdue
+              ? '종료일이 지났습니다. 정산은 아직 확정되지 않았습니다'
+              : p.status === POPUP_STATUS.PREP
+                ? '반출서만 작성된 상태입니다. 아직 재고는 움직이지 않았습니다'
+                : '행사 중 · 추가 반출과 정산을 여기서 합니다'}
           </p>
         </Link>
       ))}
