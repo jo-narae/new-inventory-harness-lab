@@ -31,7 +31,8 @@
 | 아키텍처     | `docs/06-architecture.md` | 확정             |
 | 개별 작업    | GitHub Issue              | 확정             |
 | 검증 규칙    | `docs/harness/02-verification.md` | 확정       |
-| 구현·검증 루프 | 없음                        | 추후 생성          |
+| 구현·검증 루프 (로컬) | `docs/harness/03-loop.md` | 확정             |
+| PR 이후의 흐름 | 없음                        | 추후 생성          |
 
 
 ---
@@ -120,6 +121,32 @@
 ---
 
 
+### 구현·검증 루프 (로컬)
+
+
+**원본:** `docs/harness/03-loop.md`
+
+
+다음을 판단할 때 사용한다.
+
+
+* 1 attempt 가 무엇이고 어떻게 세는가
+* 검증이 실패했을 때 다시 돌리는가 멈추는가
+* 시도 횟수와 NEEDS_HUMAN 을 어디에 남기는가
+* 세션이 바뀌었을 때 어떻게 이어받는가
+
+
+무엇을 통과해야 검증된 것인지는 `docs/harness/02-verification.md`를 따른다.
+무엇이 NEEDS_HUMAN 인지는 이 문서 §4·§6과 `docs/harness/02-verification.md` §6을 따른다.
+03 은 그것들을 반복 제어 안에 배치할 뿐 새 조건을 만들지 않는다.
+
+
+PR 이후의 흐름은 이 원본이 정하지 않는다 (§5).
+
+
+---
+
+
 ### 개별 작업
 
 
@@ -189,19 +216,18 @@ AI가 스스로 처리하는 것은 첫 줄(참고 문서 ↔ SSOT)뿐이고, �
 ## 5. 아직 원본이 없는 영역
 
 
-### 구현·검증 루프
+### PR 이후의 흐름
 
 
 현재 원본 없음.
 
 
-추후 다음 흐름을 명시하는 원본을 만든다.
+`Issue → 구현 → 검증` 까지의 로컬 반복은 `docs/harness/03-loop.md` 가 정한다.
+그 뒤 — `PR → CI → Review → 사람 판단 → Merge` — 는 아직 원본이 없다.
 
 
-`Issue → 구현 → 검증 → PR → CI → Review → 사람 판단 → Merge`
-
-
-세부 순서와 실패·재시도 규칙은 해당 원본이 만들어질 때 정의한다.
+세부 순서와 게이트 규칙은 해당 원본이 만들어질 때 정의한다.
+그전까지는 지금까지의 관행을 규칙인 것처럼 말하지 않는다.
 
 
 ---
@@ -238,6 +264,7 @@ SSOT가 틀렸다고 판단되면 고치지 말고 **말한다.**
 * `docs/06-architecture.md`
 * `docs/harness/01-ssot.md`
 * `docs/harness/02-verification.md`
+* `docs/harness/03-loop.md`
 * `prisma/schema.prisma`
 * `scripts/verify/` 안의 모든 `.ts`
 
