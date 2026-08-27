@@ -32,7 +32,8 @@
 | 개별 작업    | GitHub Issue              | 확정             |
 | 검증 규칙    | `docs/harness/02-verification.md` | 확정       |
 | 구현·검증 루프 (로컬) | `docs/harness/03-loop.md` | 확정             |
-| PR 이후의 흐름 | 없음                        | 추후 생성          |
+| PR 진입 · CI 실패 후 복귀 | `docs/harness/03-loop.md` | 확정             |
+| Review 이후의 흐름 | 없음                        | 추후 생성          |
 
 
 ---
@@ -132,16 +133,20 @@
 
 * 1 attempt 가 무엇이고 어떻게 세는가
 * 검증이 실패했을 때 다시 돌리는가 멈추는가
+* PR 에 진입할 수 있는가
+* CI 가 실패했을 때 무엇을 하는가
+* 루프를 실행하는 중에 무엇이 NEEDS_HUMAN 인가
 * 시도 횟수와 NEEDS_HUMAN 을 어디에 남기는가
 * 세션이 바뀌었을 때 어떻게 이어받는가
 
 
 무엇을 통과해야 검증된 것인지는 `docs/harness/02-verification.md`를 따른다.
-무엇이 NEEDS_HUMAN 인지는 이 문서 §4·§6과 `docs/harness/02-verification.md` §6을 따른다.
-03 은 그것들을 반복 제어 안에 배치할 뿐 새 조건을 만들지 않는다.
+문서·원본 충돌에서 오는 NEEDS_HUMAN 은 이 문서 §4·§6을 따른다.
+03 은 그것을 반복 제어 안에 배치할 뿐 새 충돌 조건을 만들지 않는다.
+루프를 실행하는 중에만 생기는 NEEDS_HUMAN 조건은 `docs/harness/03-loop.md` 가 정한다.
 
 
-PR 이후의 흐름은 이 원본이 정하지 않는다 (§5).
+Review · 사람 판단 · Merge 는 이 원본이 정하지 않는다 (§5).
 
 
 ---
@@ -216,14 +221,14 @@ AI가 스스로 처리하는 것은 첫 줄(참고 문서 ↔ SSOT)뿐이고, �
 ## 5. 아직 원본이 없는 영역
 
 
-### PR 이후의 흐름
+### Review 이후의 흐름
 
 
 현재 원본 없음.
 
 
-`Issue → 구현 → 검증` 까지의 로컬 반복은 `docs/harness/03-loop.md` 가 정한다.
-그 뒤 — `PR → CI → Review → 사람 판단 → Merge` — 는 아직 원본이 없다.
+`Issue → 구현 → 검증 → PR 진입 → CI 실패 후 복귀` 까지는 `docs/harness/03-loop.md` 가 정한다.
+그 뒤 — `Review → 사람 판단 → Merge` — 는 아직 원본이 없다.
 
 
 세부 순서와 게이트 규칙은 해당 원본이 만들어질 때 정의한다.
